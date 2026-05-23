@@ -52,6 +52,11 @@ library-system/
 │   │       │   └── theme.ts
 │   │       ├── hooks/
 │   │       │   ├── __tests__/           ← Unit tests (Jest)
+│   │       │   │   ├── use-attendance.test.ts
+│   │       │   │   ├── use-auth.test.ts
+│   │       │   │   ├── use-books.test.ts
+│   │       │   │   ├── use-fines.test.ts
+│   │       │   │   └── use-loans.test.ts
 │   │       │   ├── use-attendance.ts
 │   │       │   ├── use-auth.ts
 │   │       │   ├── use-books.ts
@@ -162,6 +167,7 @@ library-system/
 │   ├── config.toml
 │   ├── seed.sql
 │   ├── functions/
+│   │   ├── deno.json                    ← Import map: resolves @library-system/shared-utils for Deno
 │   │   ├── _shared/                     ← Shared utilities for all Edge Functions
 │   │   │   ├── cors.ts
 │   │   │   └── supabase-client.ts

@@ -6,6 +6,8 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createAdminClient } from "../_shared/supabase-client.ts";
 import { corsHeaders } from "../_shared/cors.ts";
+// Import shared business logic from monorepo — resolved via deno.json import map
+import { calculatePenalty } from "@library-system/shared-utils";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -14,14 +16,15 @@ serve(async (req) => {
 
   try {
     const supabase = createAdminClient();
-    const now = new Date().toISOString();
+    const now = new Date();
+    const nowIso = now.toISOString();
 
     // Find all active loans where due_date has passed
     const { data: overdueLoans, error: fetchError } = await supabase
       .from("loans")
       .select("id, member_id, book_id, due_date")
       .eq("status", "active")
-      .lt("due_date", now);
+      .lt("due_date", nowIso);
 
     if (fetchError) throw fetchError;
 
@@ -32,11 +35,18 @@ serve(async (req) => {
       );
     }
 
-    // Batch update status to "overdue"
-    const ids = overdueLoans.map((loan) => loan.id);
+    // Batch update status to "overdue" and calculate projected penalties
+    const results = overdueLoans.map(
+      (loan: { id: string; due_date: string }) => ({
+        id: loan.id,
+        projected_penalty: calculatePenalty(new Date(loan.due_date), now),
+      }),
+    );
+
+    const ids = results.map((r) => r.id);
     const { error: updateError } = await supabase
       .from("loans")
-      .update({ status: "overdue", updated_at: now })
+      .update({ status: "overdue", updated_at: nowIso })
       .in("id", ids);
 
     if (updateError) throw updateError;
@@ -45,12 +55,13 @@ serve(async (req) => {
       JSON.stringify({
         message: `Marked ${ids.length} loan(s) as overdue`,
         count: ids.length,
-        loan_ids: ids,
+        loans: results,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return new Response(JSON.stringify({ error: message }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

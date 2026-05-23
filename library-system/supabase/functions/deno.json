@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["deno.window"]
+  },
+  "imports": {
+    "@library-system/shared-utils": "../../packages/shared-utils/src/index.ts",
+    "@library-system/shared-utils/": "../../packages/shared-utils/src/"
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "@capstone/shared-utils/": "../../packages/shared-utils/src/",
+    "otpauth": "https://esm.sh/otpauth@9.2.2"
+  }
+}
