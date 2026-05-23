@@ -1,24 +1,38 @@
 {
   "name": "mobile",
   "version": "1.0.0",
-  "description": "",
-  "main": "babel.config.js",
+  "main": "expo-router/entry",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "test": "jest"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^3.1.0",
-    "expo": "^56.0.3",
-    "expo-constants": "^56.0.14",
-    "expo-linking": "^56.0.11",
-    "expo-router": "^56.2.5",
-    "expo-status-bar": "^56.0.4",
-    "react-native": "^0.85.3",
-    "react-native-safe-area-context": "^5.8.0",
-    "react-native-screens": "^4.25.2"
-  }
+    "@react-native-async-storage/async-storage": "2.1.2",
+    "@supabase/supabase-js": "^2.45.0",
+    "@tanstack/react-query": "^5.51.0",
+    "expo": "~55.0.0",
+    "expo-constants": "~17.0.0",
+    "expo-crypto": "~14.0.0",
+    "expo-linking": "~7.0.0",
+    "expo-router": "~4.0.0",
+    "expo-status-bar": "~2.2.0",
+    "otpauth": "^9.5.1",
+    "react": "19.0.0",
+    "react-native": "0.79.2",
+    "react-native-get-random-values": "~1.11.0",
+    "react-native-qrcode-svg": "^6.3.21",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-screens": "~4.10.0",
+    "react-native-svg": "15.11.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.0",
+    "@types/react": "~19.0.0",
+    "babel-preset-expo": "~12.0.0",
+    "typescript": "~5.6.0"
+  },
+  "private": true
 }
